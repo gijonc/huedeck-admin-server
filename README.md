@@ -1,7 +1,1 @@
-# hue-server
-
-### USAGE
-
-`npm install` installs run-time project dependencies and developer tools listed in package.json file
-
-`npm start` starts Node.js server and running on localhost (default port: 9000)
+### This repo is for source code demo only. This aims to provide a Node.js server template. (Unable to run without configurations)
