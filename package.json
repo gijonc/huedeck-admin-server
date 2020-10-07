@@ -1,0 +1,69 @@
+{
+  "name": "hue-server",
+  "version": "0.1.0",
+  "description": "huedeck-web-admin-api",
+  "main": "build",
+  "scripts": {
+    "dev": "nodemon -w src --exec \"babel-node src --presets stage-0\"",
+    "build": "babel src -s -D -d build --presets stage-0",
+    "start": "nodemon src/server.js --ignore src/tmp/",
+    "test": "eslint src",
+    "clean": "del build/**/*.js -f"
+  },
+  "eslintConfig": {
+    "extends": "eslint:recommended",
+    "parserOptions": {
+      "ecmaVersion": 7,
+      "sourceType": "module"
+    },
+    "env": {
+      "node": true
+    },
+    "rules": {
+      "no-console": 0,
+      "no-unused-vars": 1
+    }
+  },
+  "author": "huedeck",
+  "license": "ISC",
+  "dependencies": {
+    "@google-cloud/storage": "^2.5.0",
+    "@google-cloud/vision": "^0.25.0",
+    "async": "^2.6.1",
+    "axios": "^0.18.0",
+    "bcrypt": "^3.0.6",
+    "body-parser": "^1.18.2",
+    "csvtojson": "^2.0.8",
+    "debug": "^3.1.0",
+    "dotenv": "^5.0.1",
+    "download": "^7.1.0",
+    "express": "^4.16.3",
+    "formidable": "^1.2.1",
+    "gcs-resumable-upload": "^1.0.0",
+    "json2csv": "^4.5.0",
+    "jsonwebtoken": "^8.2.1",
+    "morgan": "^1.9.1",
+    "mysql2": "^1.5.3",
+    "npm": "^6.9.0",
+    "parse-error": "^0.2.0",
+    "passport": "^0.4.0",
+    "passport-jwt": "^4.0.0",
+    "performance-now": "^2.1.0",
+    "request": "^2.88.0",
+    "sequelize": "^4.42.0",
+    "sequelize-cli": "^5.4.0",
+    "sharp": "^0.22.0",
+    "shopify-api-node": "^2.15.2",
+    "validator": "^9.4.1"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-stage-0": "^6.24.1",
+    "del-cli": "^1.1.0",
+    "eslint": "^4.19.1",
+    "nodemon": "^1.18.11",
+    "uglify-js": "^3.3.22"
+  }
+}
