@@ -3,9 +3,10 @@
 const router = require("express").Router();
 const passport = require("passport");
 
+// product route controller functions
+const connect = require("../controllers/ProductCtrl/connect");
 const updateInventoryStock = require('../controllers/ProductCtrl/updateInventoryStock');
 const createProduct = require('../controllers/ProductCtrl/createProduct');
-const connect = require('../controllers/ProductCtrl/connect');
 const updateProductInfo = require('../controllers/ProductCtrl/updateProductInfo');
 const updateProductImage = require('../controllers/ProductCtrl/updateProductImage');
 // const uploadImageToGcStore = require('../controllers/ProductCtrl/createGcpImage');
@@ -59,12 +60,12 @@ router.post(
 );
 
 router.post(
-	"/updateProduct/compressImageToGcStore",
-	updateProductImage.compressImageToGcStore
+	"/updateProduct/uploadImage",
+	updateProductImage.uploadImage
 );
 
 // router.post(
-// 	"/create/uploadImageToGcStore",
+// 	"/create/uploadImage",
 // 	uploadImageToGcStore.uploadImageToGcStore
 // );
 

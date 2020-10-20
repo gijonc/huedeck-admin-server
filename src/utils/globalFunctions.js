@@ -3,13 +3,13 @@
 const pe = require("parse-error");
 
 module.exports = {
-	to: promise => {
+	to: (promise) => {
 		//global function that will help use handle promise rejections, this article talks about it http://blog.grossman.io/how-to-write-async-await-without-try-catch-blocks-in-javascript/
 		return promise
-			.then(data => {
+			.then((data) => {
 				return [null, data];
 			})
-			.catch(err => [pe(err)]);
+			.catch((err) => [pe(err)]);
 	},
 
 	// thorw Error
@@ -24,29 +24,27 @@ module.exports = {
 	// return error
 	ReE: (res, err, code) => {
 		// Error Web Response
-		let key = "";
-		let msg = "";
-		if (typeof err == "object" && typeof err.message != "undefined") {
-			msg = err.message;
+		let key = "internal";
+		let message = "Internal error";
+		if (typeof err === "object" && typeof err.message !== "undefined") {
+			message = err.message;
 
-			if (err.key)
-				key = err.key;
+			if (err.key) key = err.key;
 		}
-		if (typeof code !== "undefined") res.statusCode = code;
-		return res.json({ success: false, key: key, error: msg });
+		if (typeof code !== "undefined") res.statusCode = code || 501;
+		return res.json({ success: false, key, message });
 	},
 
 	// return success
 	ReS: (res, data, code) => {
 		// Success Web Response
-		let send_data = { success: true };
+		let resData = { success: true };
 
-		if (typeof data == "object") {
-			send_data = Object.assign(data, send_data); //merge the objects
+		if (typeof data === "object") {
+			resData = Object.assign(data, resData); // merge the objects
 		}
-		if (typeof code !== "undefined") res.statusCode = code;
-		return res.json(send_data);
+		if (typeof code !== "undefined") res.statusCode = code || 200;
+		return res.json(resData);
 	},
-
-}
+};
 
