@@ -10,11 +10,15 @@ function getResizedImageUri(url, size) {
 	return prefix + `_${size}x${size}` + suffix;
 }
 
+/**
+ * @param {string[]} imageUriList
+ */
+
 module.exports = async function upload(imageUriList) {
 	const t0 = now();
 	const dataLen = imageUriList.length;
 
-	// how many promises to resolve concurrently (in a single batch)
+	// define the number of promises to resolve concurrently (in a single batch)
 	// recommended payload between 20 ~ 50
 	const payload = 50;
 
