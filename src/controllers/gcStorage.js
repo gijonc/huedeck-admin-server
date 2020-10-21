@@ -1,10 +1,8 @@
+"use strict";
+
 const axios = require("axios");
-const {
-	gcsBucketPath
-} = require("../config");
-const {
-	createGcpBucket
-} = require('./utils');
+const { gcsBucketPath } = require("../config");
+const { createGcpBucket } = require('./utils');
 
 // creating data stream to upload to GCS bucket
 const bucket = new createGcpBucket();
@@ -30,7 +28,7 @@ async function uploadImage(url, imgName, bucketPath) {
 			}
 		});
 
-		// transfering data from url to GCS
+		// piping data from shopify cdn to GCS
 		response.data.pipe(blobStream);
 
 		// get result from promise 
@@ -55,7 +53,6 @@ async function uploadImage(url, imgName, bucketPath) {
 			imgName
 		};
 	}
-
 }
 
 module.exports = {

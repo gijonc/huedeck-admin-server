@@ -10,28 +10,33 @@ function getResizedImageUri(url, size) {
 	return prefix + `_${size}x${size}` + suffix;
 }
 
-async function upload(imageUriList) {
+module.exports = async function upload(imageUriList) {
 	const t0 = now();
 	const dataLen = imageUriList.length;
 
-	// how many should
-	const concurrent_load = 50;
-	const loopCount = Math.ceil(dataLen / concurrent_load);
+	// how many promises to resolve concurrently (in a single batch)
+	// recommended payload between 20 ~ 50
+	const payload = 50;
+
+	// how many batch of promises (how many times to loop over)
+	const batchCount = Math.ceil(dataLen / payload);
 
 	const successList = [];
 	const failedList = [];
 
 	console.log(`\nStarting to upload ${dataLen} images =>`);
 
-	for (let i = 0; i < loopCount; i += 1) {
-		let start = i * concurrent_load;
-		let end =
-			start + concurrent_load > dataLen ? dataLen : start + concurrent_load;
+	for (let i = 0; i < batchCount; i += 1) {
+		let start = i * payload;
 
-		// create batch of promises
+		// if end >= data length, use data length instead
+		let end =
+			(start + payload > dataLen) ? dataLen : (start + payload);
+
+		// create promises from GCS upload api
 		const promises = [];
 		for (let j = start; j < end; j += 1) {
-			const { src, miniPic } = images[j];
+			const { src, miniPic } = imageUriList[j];
 			const resizedUrl = getResizedImageUri(src, 256);
 			const imgName = miniPic.split("/").pop();
 			const prom = gcsApi.uploadImage(resizedUrl, imgName, "img/256/");
@@ -51,7 +56,7 @@ async function upload(imageUriList) {
 		}
 
 		// print progress after every batch of promise resolved
-		if (end % concurrent_load === 0) {
+		if (end % payload === 0) {
 			// print process
 			const spent = Math.round((now() - t0) / 1000);
 			console.log(`${end} items processed in ${spent} seconds, halting...`);
@@ -69,8 +74,8 @@ async function upload(imageUriList) {
 	// return upload result
 	return {
 		"Total processed items": dataLen,
-		"Uploaded count": successList.length,
-		"Failed count": failedList.length,
+		"Total Uploaded": successList.length,
+		"Failed": failedList,
 		"Total spent": Math.round((now() - t0) / 1000) + " seconds",
 		"Total uploaded size": bytesToSize(totalBytes),
 	};
